@@ -82,81 +82,85 @@ function App() {
               style={{ width: '600px', height: '250px', borderRadius: '6px' }}
             />
             <br />
-            {!checkWalletInfo(user) ? (
-              <>
-                {' '}
-                <button
-                  disabled={!(ready && authenticated)}
-                  onClick={createWallet}
-                  style={{
-                    marginTop: '20px',
-                    margin: '10px',
-                    padding: '12px',
-                    backgroundColor: '#9ADE7B',
-                    color: '#FFF',
-                    border: 'none',
-                    borderRadius: '6px',
-                  }}
-                >
-                  Create a wallet
-                </button>
-              </>
-            ) : null}
+            {/* {checkWalletInfo(user) ? ( */}
             <button
-              onClick={exportWallet}
-              disabled={!isAuthenticated || !hasEmbeddedWallet}
+              disabled={!(ready && authenticated)}
+              onClick={createWallet}
               style={{
                 marginTop: '20px',
                 margin: '10px',
                 padding: '12px',
-                backgroundColor: '#FF8F8F',
+                backgroundColor: '#9ADE7B',
                 color: '#FFF',
                 border: 'none',
                 borderRadius: '6px',
               }}
             >
-              Export wallet key
+              Create a wallet
             </button>
-            <button
-              disabled={!user.wallet}
-              style={{
-                marginTop: '20px',
-                margin: '10px',
-                padding: '12px',
-                backgroundColor: '#FF8F8F',
-                color: '#FFF',
-                border: 'none',
-                borderRadius: '6px',
-              }}
-              onClick={async () => {
-                const signature = await signMessage(message, uiConfig);
-                // Use `signature` however you'd like
-                console.log(signature);
-              }}
-            >
-              Sign
-            </button>
-            <button
-              disabled={!user.wallet}
-              style={{
-                marginTop: '20px',
-                margin: '10px',
-                padding: '12px',
-                backgroundColor: '#EEF296',
-                color: '#FFF',
-                border: 'none',
-                borderRadius: '6px',
-              }}
-              onClick={async () => {
-                const txReceipt = await sendTransaction(unsignedTx, uiConfig);
-                // `txReceipt` is an object of type `TransactionReceipt`. From this object, you can
-                // access your transaction's `transactionHash`, `blockNumber`, `gasUsed`, and
-                // more.
-                console.log(txReceipt);
-              }}
-            >
-              Send Tn
-            </button>
+            {/* ) : ( */}
+            <>
+              {/* export key */}
+              <button
+                onClick={exportWallet}
+                disabled={!isAuthenticated || !hasEmbeddedWallet}
+                style={{
+                  marginTop: '20px',
+                  margin: '10px',
+                  padding: '12px',
+                  backgroundColor: '#FF8F8F',
+                  color: '#FFF',
+                  border: 'none',
+                  borderRadius: '6px',
+                }}
+              >
+                Export wallet key
+              </button>
+              {/* sign */}
+              <button
+                disabled={!user.wallet}
+                style={{
+                  marginTop: '20px',
+                  margin: '10px',
+                  padding: '12px',
+                  backgroundColor: '#FF8F8F',
+                  color: '#FFF',
+                  border: 'none',
+                  borderRadius: '6px',
+                }}
+                onClick={async () => {
+                  const signature = await signMessage(message, uiConfig);
+                  // Use `signature` however you'd like
+                  console.log(signature);
+                }}
+              >
+                Sign
+              </button>
+              {/* send tn */}
+              <button
+                disabled={!user.wallet}
+                style={{
+                  marginTop: '20px',
+                  margin: '10px',
+                  padding: '12px',
+                  backgroundColor: '#EEF296',
+                  color: '#FFF',
+                  border: 'none',
+                  borderRadius: '6px',
+                }}
+                onClick={async () => {
+                  const txReceipt = await sendTransaction(unsignedTx, uiConfig);
+                  // `txReceipt` is an object of type `TransactionReceipt`. From this object, you can
+                  // access your transaction's `transactionHash`, `blockNumber`, `gasUsed`, and
+                  // more.
+                  console.log(txReceipt);
+                }}
+              >
+                Send Tn
+              </button>
+            </>
+            {/* )} */}
+            {/* logout */}
             <button
               onClick={logout}
               style={{
@@ -172,6 +176,7 @@ function App() {
             </button>
           </div>
         ) : (
+          // create wallet
           <button
             onClick={login}
             style={{
