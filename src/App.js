@@ -20,13 +20,7 @@ function App() {
   if (!ready) {
     return null;
   }
-  async function createwallet() {
-    try {
-      createWallet();
-    } catch (e) {
-      console.log('wallet alredy exist');
-    }
-  }
+
   async function checkWalletInfo(response) {
     if (response && response.wallet && response.wallet.address) {
       // Wallet information is available
@@ -91,9 +85,7 @@ function App() {
             {/* {checkWalletInfo(user) ? ( */}
             <button
               disabled={!(ready && authenticated)}
-              onClick={() => {
-                createwallet();
-              }}
+              onClick={createWallet}
               style={{
                 marginTop: '20px',
                 margin: '10px',
@@ -183,7 +175,21 @@ function App() {
               Log Out
             </button>
           </div>
-        ) : null}
+        ) : (
+          // create wallet
+          <button
+            onClick={login}
+            style={{
+              padding: '12px',
+              backgroundColor: '#069478',
+              color: '#FFF',
+              border: 'none',
+              borderRadius: '6px',
+            }}
+          >
+            Create Wallet
+          </button>
+        )}
       </header>
     </div>
   );
