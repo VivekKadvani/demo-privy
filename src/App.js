@@ -1,9 +1,11 @@
 import './App.css';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { usePrivy } from '@privy-io/react-auth';
+import { useAuth0 } from '@auth0/auth0-react';
 const { ethers } = require('ethers');
 
 function App() {
-  const { wallets } = useWallets();
+  const { loginWithRedirect } = useAuth0();
+
   const {
     ready,
     authenticated,
@@ -21,30 +23,30 @@ function App() {
     return null;
   }
 
-  async function checkWalletInfo(response) {
-    if (response && response.wallet && response.wallet.address) {
-      // Wallet information is available
-      const walletAddress = response.wallet.address;
-      const chainType = response.wallet.chainType;
-      const chainId = response.wallet.chainId;
+  // async function checkWalletInfo(response) {
+  //   if (response && response.wallet && response.wallet.address) {
+  //     // Wallet information is available
+  //     const walletAddress = response.wallet.address;
+  //     const chainType = response.wallet.chainType;
+  //     const chainId = response.wallet.chainId;
 
-      console.log(`Address: ${walletAddress}`);
-      console.log(`Chain Type: ${chainType}`);
-      console.log(`Chain ID: ${chainId}`);
-      const wallet = wallets.find(
-        (wallet) =>
-          wallet.address === '0x3db65e327739C1a747a2347359303963aB8376E8',
-      );
-      await wallet.switchChain(11155111);
-      return true;
-    } else {
-      console.log(`No wallet information available in the response.`);
-      return false;
-    }
-  }
+  //     console.log(`Address: ${walletAddress}`);
+  //     console.log(`Chain Type: ${chainType}`);
+  //     console.log(`Chain ID: ${chainId}`);
+  //     const wallet = wallets.find(
+  //       (wallet) =>
+  //         wallet.address === '0x3db65e327739C1a747a2347359303963aB8376E8',
+  //     );
+  //     await wallet.switchChain(11155111);
+  //     return true;
+  //   } else {
+  //     console.log(`No wallet information available in the response.`);
+  //     return false;
+  //   }
+  // }
 
   // Check that your user is authenticated
-  const isAuthenticated = ready && authenticated;
+  const isAuthenticatedL = ready && authenticated;
 
   // Check that your user has an embedded wallet
   let hasEmbeddedWallet;
@@ -69,12 +71,26 @@ function App() {
     chainId: 11155111,
     value: ethers.utils.hexlify(1000000000000000),
   };
+
   return (
     <div className="App">
       <header className="App-header">
+        <button
+          onClick={() => loginWithRedirect()}
+          style={{
+            marginTop: '20px',
+            padding: '12px',
+            backgroundColor: '#069478',
+            color: '#FFF',
+            border: 'none',
+            borderRadius: '6px',
+          }}
+        >
+          Log in Auth0
+        </button>
         {/* If the user is not authenticated, show a login button */}
         {/* If the user is authenticated, show the user object and a logout button */}
-        {ready && authenticated ? (
+        {isAuthenticatedL ? (
           <div>
             <textarea
               readOnly
@@ -82,6 +98,7 @@ function App() {
               style={{ width: '600px', height: '250px', borderRadius: '6px' }}
             />
             <br />
+
             {/* {checkWalletInfo(user) ? ( */}
             <button
               disabled={!(ready && authenticated)}
@@ -103,7 +120,7 @@ function App() {
               {/* export key */}
               <button
                 onClick={exportWallet}
-                disabled={!isAuthenticated || !hasEmbeddedWallet}
+                disabled={!isAuthenticatedL || !hasEmbeddedWallet}
                 style={{
                   marginTop: '20px',
                   margin: '10px',
@@ -118,7 +135,7 @@ function App() {
               </button>
               {/* sign */}
               <button
-                disabled={!user.wallet}
+                disabled={!user?.wallet}
                 style={{
                   marginTop: '20px',
                   margin: '10px',
@@ -138,7 +155,7 @@ function App() {
               </button>
               {/* send tn */}
               <button
-                disabled={!user.wallet}
+                disabled={!user?.wallet}
                 style={{
                   marginTop: '20px',
                   margin: '10px',
